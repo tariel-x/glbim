@@ -17,39 +17,14 @@
  */
 
 /**
- * Scene container and base class
- * @param {string} objFile Path and model filename
- * @param {string} mtlFile Path and MTL filename
- * @param {THREE.Scene} scene ThreeJS scene
+ * ThreeJS base object
+ * @param {THREE.Object3D} object threejs object
  */
-
-function Scene(objFile, mtlFile, scene)
+function Object(object)
 {
     /**
-     * Model file
+     * Three object
      */
-    this.ObjFile = objFile;
+    this.Object = object;
     
-    /**
-     * Textures file
-     */
-    this.MtlFile = mtlFile;
-
-    /**
-     * Objects array
-     */
-    this.Objects = {};
-        
-    /**
-     * Array of messages, containing adreess and action object
-     */
-    this.Messages = [];
-    
-    /**
-     * Loads model and fills scene with objects
-     */
-    this.load = function()
-    {
-        
-    }
 }
