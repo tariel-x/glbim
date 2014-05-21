@@ -4,6 +4,8 @@ var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
 var clock = new THREE.Clock();
 
+var bimScene;
+
 var objects = {};
 
 init();
@@ -33,6 +35,9 @@ function init()
 
     scene = new THREE.Scene();
     scene.fog = new THREE.Fog( 0xffffff, 1000, 10000 );
+    
+    bimScene = new Scene(scene);
+    bimScene.load('files/textures/cubes.obj', 'files/textures/cubes.mtl');
 
     /*var ambientLight = new THREE.AmbientLight( 0xffffff );
     scene.add( ambientLight );*/
@@ -131,12 +136,6 @@ function onWindowResize()
     camera.updateProjectionMatrix();
 
     renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function onDocumentMouseMove(event) 
-{
-    mouseX = (event.clientX - windowHalfX) / 2;
-    mouseY = (event.clientY - windowHalfY) / 2;
 }
 
 function animate() 

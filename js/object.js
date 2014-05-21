@@ -20,11 +20,44 @@
  * ThreeJS base object
  * @param {THREE.Object3D} object threejs object
  */
-function Object(object)
+function Object(object, name, prefix)
 {
     /**
      * Three object
      */
     this.Object = object;
     
+    /**
+     * Object name
+     */
+    this.Name = name;
+    
+    /**
+     * Prefix or type of the current object
+     */
+    this.Prefix = prefix;
+    
+    /**
+     * Hide object
+     */
+    this.hide = function()
+    {
+        
+    }
+    
+    /**
+     * Show object
+     */
+    this.show = function()
+    {
+        
+    }
+    
+    /**
+     * Set object opacity
+     */
+    this.setOpacity
+    {
+        
+    }
 }

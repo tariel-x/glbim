@@ -18,12 +18,10 @@
 
 /**
  * Scene container and base class
- * @param {string} objFile Path and model filename
- * @param {string} mtlFile Path and MTL filename
  * @param {THREE.Scene} scene ThreeJS scene
  */
 
-function Scene(objFile, mtlFile, scene)
+function Scene(scene)
 {
     /**
      * Model file
@@ -47,9 +45,45 @@ function Scene(objFile, mtlFile, scene)
     
     /**
      * Loads model and fills scene with objects
+     * @param {string} objFile Path and model filename
+     * @param {string} mtlFile Path and MTL filename
      */
-    this.load = function()
+    this.load = function(objFile, mtlFile)
     {
-        
+        var loader = new THREE.OBJMTLLoader();
+        loader.load('files/textures/cubes.obj', 'files/textures/cubes.mtl', function(object) {
+            for (var i = 0; i < object.children.length; i++)
+            {
+                var child = object.children[i];
+                console.log('loaded ' + child.name);
+                objects[child.name] = child;
+                child.castShadow = true;
+                child.receiveShadow = true;
+                for (var j = 0; j < child.children.length; j++)
+                {
+                    child.children[j].castShadow = true;
+                    child.children[j].receiveShadow = true;
+                    child.children[j].material.specular = new THREE.Color( 0x000000 );
+                    child.children[j].material.side = THREE.DoubleSide;
+
+                    //console.log(child.children[j]);
+                }
+            }
+
+            object.scale.set(10, 10, 10);
+
+            object.castShadow = true;
+            object.receiveShadow = true;
+            scene.add(object);
+        });
+    }
+    
+    /**
+     * Returns current camera from first person object
+     * @returns {THREE.Camera}
+     */
+    this.getCurrentCamera = function()
+    {
+        return this.Object.camera.camera;
     }
 }
