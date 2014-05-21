@@ -16,48 +16,55 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+
 /**
- * ThreeJS base object
- * @param {THREE.Object3D} object threejs object
+ * Ambient lamp container
+ * @param {THREE.Object3D} object
+ * @param {string} name
+ * @param {string} prefix
+ * @param {THREE.Color} color
+ * @param {integer} intencivity
  */
-function Object(object, name, prefix)
+function Ambient(object, name, prefix, color, groundColor, intencivity)
 {
     /**
-     * Three object
+     * Lamp color
      */
-    this.Object = object;
+    this.Color = color;
     
     /**
-     * Object name
+     * Color that multiplies with material color
      */
-    this.Name = name;
+    this.GroundColor = groundColor;
     
     /**
-     * Prefix or type of the current object
+     * Lamp intencivity
      */
-    this.Prefix = prefix;
+    this.Intencivity = intencivity;
     
     /**
-     * Hide object
+     * Lamp is enabled
      */
-    this.hide = function()
-    {
-        
-    }
+    this.turned = false;
     
-    /**
-     * Show object
-     */
-    this.show = function()
-    {
-        
-    }
-    
-    /**
-     * Set object opacity
-     */
-    this.setOpacity
-    {
-        
-    }
+    BimObject.call(this, object, name, prefix);
 }
+
+var proto_copy = new BimObject();
+proto_copy.constructor = Lamp;
+
+/**
+ * Turn on the lamp
+ */
+proto_copy.turnOn = function(){
+    this.turned = true;
+}
+
+/**
+ * Turn off the lamp
+ */
+proto_copy.turnOff = function(){
+    this.turned = false;
+}
+
+Lamp.prototype = proto_copy;
