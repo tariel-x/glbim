@@ -35,7 +35,7 @@ function Person(object, name, prefix)
      */
     this.Controls;
     
-    this.Camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 20000);
+    this.Camera = new THREE.PerspectiveCamera(45, window.innerWidth / (window.innerHeight ), 1, 20000);
     this.Camera.position.z = -225;
     this.Camera.position.z = 265;
     this.Camera.position.y = 339; 

@@ -51,6 +51,36 @@ function Scene(scene)
     var factory = new objectFactory();
     
     /**
+     * Stores number of seconds from building start
+     * @type Number
+     */
+    var dateIterator;
+    
+    /**
+     * Date, when process ends
+     * @type Number
+     */
+    var dateEnd = 0;
+    
+    /**
+     * How much to add to dateIterator each iteration
+     * @type Number
+     */
+    var dateDiff = 1;
+    
+    /**
+     * Play or pause
+     * @type Boolean
+     */
+    var statusPlay = false;
+    
+    /**
+     * Object with building scheme
+     * @type Object
+     */
+    var processScheme = {};
+    
+    /**
      * Loads model and fills scene with objects
      * @param {string} objFile Path and model filename
      * @param {string} mtlFile Path and MTL filename
@@ -107,7 +137,19 @@ function Scene(scene)
      */
     this.update = function()
     {
+
 	GlObjects['person'].update();
+	if (this.statusPlay == true)
+	{
+	    this.dateIterator = this.dateIterator + 1;
+	    /*for ( var property in processScheme[dateIterator].show) {
+	     //GlObjects[property]
+	     console.log(property);
+	     }*/
+	    console.log(processScheme[dateIterator]);
+	    console.log(dateIterator);
+	}
+	
     }
     
     /**
@@ -133,5 +175,43 @@ function Scene(scene)
 	GlScene.add( hemiLight );
 	GlObjects['ambient'] = new Ambient(hemiLight, 'ambient', 'light', color, color, intensivity);
     }
-
+    
+    /**
+     * Adds new building processing scheme
+     * @param {Object} scheme
+     */
+    this.addProcessSceme = function(scheme)
+    {
+	processScheme = scheme;
+    }
+    
+    this.play = function()
+    {
+	//TODO: FIX this kostil
+	var i = 0;
+	for ( var property in processScheme) {
+	    if (i == 0)
+		dateIterator = property;
+	    i++;
+	}
+	this.statusPlay = true;
+	//console.log(dateIterator);
+    }
+    
+    this.pause = function()
+    {
+	this.statusPlay = false;
+    }
+    
+    this.stop = function ()
+    {
+	//TODO: FIX this kostil
+	var i = 0;
+	for ( var property in processScheme) {
+	    if (i == 0)
+		dateIterator = Number(property);
+	    i++;
+	}
+	this.statusPlay = false;
+    }
 }

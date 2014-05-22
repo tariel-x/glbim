@@ -1,16 +1,20 @@
-var container, stats;
+var container = document.getElementById('glbim'), stats;
 var scene, renderer;
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
 var bimScene;
+
+var processingScheme = {};
 
 init();
 animate();
 
 function init() 
 {
-    container = document.createElement('div');
-    document.body.appendChild(container);
+    //container = document.createElement('div');
+    //container = ;
+    //console.log(container);
+    //document.body.appendChild(container);
 
     scene = new THREE.Scene();
     scene.fog = new THREE.Fog( 0xffffff, 1000, 10000 );
@@ -22,7 +26,7 @@ function init()
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setClearColor( scene.fog.color, 1 );
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight );
     renderer.shadowMapEnabled = true;
     renderer.shadowMapSoft = true;
 
@@ -60,12 +64,12 @@ function init()
 function onWindowResize() 
 {
     windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
+    windowHalfY = window.innerHeight / 4;
 
-    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = window.innerWidth / (window.innerHeight / 2);
     camera.updateProjectionMatrix();
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight / 2);
 }
 
 function animate() 
@@ -85,3 +89,19 @@ function render()
     renderer.render(scene, bimScene.getObject('person').Camera);
 }
 
+function convertGantt(gantt)
+{
+    var scheme = {};
+    for (var i = 0; i < gantt['data'].length; i++)
+    {
+	var date = new Date(gantt['data'][i]['start_date']).getTime()/1000;
+	scheme[date] = {};
+	scheme[date]['show'] = gantt['data'][i]['show'];
+	scheme[date]['hide'] = gantt['data'][i]['hide'];
+    }
+    return scheme;
+}
+
+processingScheme = convertGantt(gantt);
+bimScene.addProcessSceme(processingScheme);
+//bimScene.play();
