@@ -63,10 +63,16 @@ function Scene(scene)
     var dateEnd = 0;
     
     /**
+     * Date, when process starts
+     * @type Number
+     */
+    var dateStart = 0;
+    
+    /**
      * How much to add to dateIterator each iteration
      * @type Number
      */
-    var dateDiff = 1;
+    var dateDiff = 3000;
     
     /**
      * Play or pause
@@ -78,7 +84,9 @@ function Scene(scene)
      * Object with building scheme
      * @type Object
      */
-    var processScheme = {};
+    var processScheme = [];
+    
+    var timeContainer = document.getElementById('bimtime');
     
     /**
      * Loads model and fills scene with objects
@@ -141,13 +149,30 @@ function Scene(scene)
 	GlObjects['person'].update();
 	if (this.statusPlay == true)
 	{
-	    this.dateIterator = this.dateIterator + 1;
-	    /*for ( var property in processScheme[dateIterator].show) {
-	     //GlObjects[property]
-	     console.log(property);
-	     }*/
-	    console.log(processScheme[dateIterator]);
-	    console.log(dateIterator);
+	    dateIterator = Number(dateIterator) + dateDiff;
+	    
+	    for ( var property in processScheme) {//search for all stages
+		if (property >= dateIterator - dateDiff && property <= dateIterator + dateDiff)
+		{
+		    //console.log(processScheme[property]);
+		    for ( var show in processScheme[property]['show']) {//show all mentioned objects
+			GlObjects[processScheme[property]['show'][show]].show();
+			console.log("show " + processScheme[property]['show'][show]);
+		    }
+		    for ( var hide in processScheme[property].hide) {//hide all mentioned objects
+			GlObjects[processScheme[property].hide[hide]].hide();
+			console.log("hide " + processScheme[property].hide[hide]);
+		    }
+		}
+	    }
+	    
+	    if (dateIterator >= dateEnd)
+	    {
+		this.stop();
+	    }
+
+	    var currentDate = new Date(Number(dateIterator)*1000);
+	    timeContainer.innerHTML = currentDate.toLocaleString();
 	}
 	
     }
@@ -183,19 +208,14 @@ function Scene(scene)
     this.addProcessSceme = function(scheme)
     {
 	processScheme = scheme;
+	var keys = Object.keys(processScheme)
+	dateStart = keys[0];
+	dateEnd = keys[keys.length-1];
     }
     
     this.play = function()
     {
-	//TODO: FIX this kostil
-	var i = 0;
-	for ( var property in processScheme) {
-	    if (i == 0)
-		dateIterator = property;
-	    i++;
-	}
 	this.statusPlay = true;
-	//console.log(dateIterator);
     }
     
     this.pause = function()
@@ -205,13 +225,8 @@ function Scene(scene)
     
     this.stop = function ()
     {
-	//TODO: FIX this kostil
-	var i = 0;
-	for ( var property in processScheme) {
-	    if (i == 0)
-		dateIterator = Number(property);
-	    i++;
-	}
+	dateIterator = dateStart;
 	this.statusPlay = false;
+	
     }
 }

@@ -17,3 +17,11 @@ body {
 #stats #fps { background: transparent !important }
 #stats #fps #fpsText { color: #abc !important }
 #stats #fps #fpsGraph { display: none }
+
+#bimtime
+{
+    position: absolute; 
+    top:0; 
+    left: 0;
+    font-size: 50px;
+}
