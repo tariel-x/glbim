@@ -45,7 +45,7 @@ function objectFactory()
 	directionalLight.position.set( 250, 250, 250 );
 	directionalLight.castShadow = true;
 	directionalLight.shadowDarkness = 0.5;
-	//directionalLight.shadowCameraVisible = true;
+	directionalLight.shadowCameraVisible = true;
 	return new Lamp(directionalLight, name, prefix, color, intensivity);
 	
     }

@@ -48,6 +48,8 @@ function Person(object, name, prefix, domElement)
     this.Controls.constrainVertical = true;
     this.Controls.verticalMin = 1.1;
     this.Controls.verticalMax = 2.2;
+    this.Controls.lat = -77;
+    this.Controls.lon = -83;
     
     BimObject.call(this, object, name, prefix);
 }

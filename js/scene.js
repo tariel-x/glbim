@@ -296,6 +296,7 @@ function Scene(scene, domElement)
 		    GlObjects[processScheme[property].hide[hide]].hide();
 		    console.log("hide " + processScheme[property].hide[hide]);
 		}
+		this.currentWork = processScheme[property];
 	    }
 	}
 	dateIterator = current;

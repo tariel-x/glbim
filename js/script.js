@@ -82,6 +82,7 @@ function init()
 	var end = bimScene.getEnd();
 	var percent = (end - start) / 100;
 	var curr_percents = (date - start) / percent;
+	gantt.selectTask(id);
 	sliderHandler(curr_percents, slider);
 	slider.setValue(curr_percents);
 	//console.log(curr_percents );
@@ -103,7 +104,6 @@ function render()
 
 function convertGantt(gantt)
 {
-    console.log(gantt);
     var scheme = [];
     for (var i = 0; i < gantt['data'].length; i++)
     {
@@ -116,7 +116,6 @@ function convertGantt(gantt)
 	scheme[date]['hide'] = gantt['data'][i]['hide'];
 	scheme[date]['ganttId'] = gantt['data'][i]['id'];
     }
-    console.log(scheme);
     return scheme;
 }
 
@@ -149,6 +148,7 @@ function sliderHandler(pos, slider)
 	var percent = (end - start) / 100;
 	var currrent = (pos * percent) + Number(start);
 	bimScene.setDateIterator(currrent);
+	gantt.selectTask(bimScene.currentWork.ganttId);
     }
 }
 
