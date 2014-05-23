@@ -18,7 +18,7 @@ function init()
 
     scene = new THREE.Scene();
     scene.fog = new THREE.Fog( 0xffffff, 1000, 10000 );
-    bimScene = new Scene(scene);
+    bimScene = new Scene(scene, container);
     bimScene.load('files/textures/cubes.obj', 'files/textures/cubes.mtl');
     bimScene.addSun();
     bimScene.addSurrondLight();
@@ -26,7 +26,7 @@ function init()
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setClearColor( scene.fog.color, 1 );
-    renderer.setSize(window.innerWidth, window.innerHeight );
+    renderer.setSize(window.innerWidth, window.innerHeight/2 );
     renderer.shadowMapEnabled = true;
     renderer.shadowMapSoft = true;
 

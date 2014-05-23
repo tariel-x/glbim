@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-function Person(object, name, prefix)
+function Person(object, name, prefix, domElement)
 {
     /**
      * Internal Three.JS clock
@@ -35,12 +35,12 @@ function Person(object, name, prefix)
      */
     this.Controls;
     
-    this.Camera = new THREE.PerspectiveCamera(45, window.innerWidth / (window.innerHeight ), 1, 20000);
+    this.Camera = new THREE.PerspectiveCamera(45, window.innerWidth / (window.innerHeight / 2), 1, 20000);
     this.Camera.position.z = -225;
     this.Camera.position.z = 265;
     this.Camera.position.y = 339; 
     
-    this.Controls = new THREE.FirstPersonControls( this.Camera );
+    this.Controls = new THREE.FirstPersonControls( this.Camera, domElement );
 
     this.Controls.movementSpeed = 500;
     this.Controls.lookSpeed = 0.16;

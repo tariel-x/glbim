@@ -21,8 +21,13 @@
  * @param {THREE.Scene} scene ThreeJS scene
  */
 
-function Scene(scene)
+function Scene(scene, domElement)
 {
+    /**
+     * Contains html DOM container for webgl
+     */
+    this.domElement = domElement;
+    
     /**
      * Objects array
      */
@@ -137,7 +142,7 @@ function Scene(scene)
      */
     this.addPerson = function()
     {
-	GlObjects["person"] = new Person(null, 'person', 'player');
+	GlObjects["person"] = new Person(null, 'person', 'player', this.domElement);
     }
     
     /**
