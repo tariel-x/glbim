@@ -67,12 +67,14 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 		if ( this.domElement === document ) {
 
 			this.viewHalfX = window.innerWidth / 2;
-			this.viewHalfY = window.innerHeight / 2;
+			this.viewHalfY = window.innerHeight / 4;
 
 		} else {
-
+			var canvas = this.domElement.children;
+			var style = getComputedStyle(canvas[0], '');
 			this.viewHalfX = this.domElement.offsetWidth / 2;
-			this.viewHalfY = this.domElement.offsetHeight / 2;
+			this.viewHalfY = this.domElement.offsetHeight / 2 ;
+			console.log(canvas);
 
 		}
 
@@ -238,12 +240,12 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 
 		if ( this.constrainVertical ) {
 
-			verticalLookRatio = Math.PI / ( this.verticalMax - this.verticalMin );
+			verticalLookRatio = 2 * Math.PI / ( this.verticalMax - this.verticalMin );
 
 		}
 
 		this.lon += this.mouseX * actualLookSpeed;
-		//console.log(this.mouseY);
+		//console.log(this.viewHalfY);
 		if( this.lookVertical ) this.lat -= this.mouseY * actualLookSpeed * verticalLookRatio;
 
 		this.lat = Math.max( - 85, Math.min( 85, this.lat ) );

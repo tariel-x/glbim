@@ -28,6 +28,8 @@ function Scene(scene, domElement)
      */
     this.domElement = domElement;
     
+    console.log(this.domElement);
+    
     /**
      * Objects array
      */

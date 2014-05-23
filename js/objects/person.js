@@ -40,7 +40,7 @@ function Person(object, name, prefix, domElement)
     this.Camera.position.z = 265;
     this.Camera.position.y = 339; 
     
-    this.Controls = new THREE.FirstPersonControls( this.Camera, domElement );
+    this.Controls = new THREE.FirstPersonControls( this.Camera/*, domElement*/ );
 
     this.Controls.movementSpeed = 500;
     this.Controls.lookSpeed = 0.16;

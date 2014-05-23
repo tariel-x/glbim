@@ -1,4 +1,5 @@
 var container = document.getElementById('glbim'), stats;
+var jqcontainer = $("#glbim");
 var scene, renderer;
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
