@@ -5,6 +5,11 @@ var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
 var bimScene;
 
+window.dhx_globalImgPath = "ext/slider/imgs/";
+
+var slider = new dhtmlxSlider("slider", 800);
+slider.init();
+
 var processingScheme = {};
 
 init();

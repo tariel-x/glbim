@@ -5,7 +5,6 @@
 *.blend2
 *.obj
 *.mtl
-*.jpg
-*.JPG
+files/*
 *.directory
 
