@@ -28,8 +28,6 @@ function Scene(scene, domElement)
      */
     this.domElement = domElement;
     
-    console.log(this.domElement);
-    
     /**
      * Objects array
      */
@@ -61,7 +59,7 @@ function Scene(scene, domElement)
      * Stores number of seconds from building start
      * @type Number
      */
-    var dateIterator;
+    var dateIterator = 0;
     
     /**
      * Date, when process ends
@@ -175,7 +173,7 @@ function Scene(scene, domElement)
 	    
 	    if (dateIterator >= dateEnd)
 	    {
-		this.stop();
+		this.statusPlay = false;
 	    }
 
 	    var currentDate = new Date(Number(dateIterator)*1000);
@@ -220,20 +218,82 @@ function Scene(scene, domElement)
 	dateEnd = keys[keys.length-1];
     }
     
+    /**
+     * Start building animation
+     */
     this.play = function()
     {
+	if (dateIterator == 0 || dateIterator >= dateEnd)
+	    dateIterator = dateStart;
 	this.statusPlay = true;
     }
     
+    /**
+     * Pause animation building
+     */
     this.pause = function()
     {
 	this.statusPlay = false;
     }
     
+    /**
+     * Stop building animation
+     */
     this.stop = function ()
     {
 	dateIterator = dateStart;
 	this.statusPlay = false;
-	
+    }
+    
+    /**
+     * Returns time of building start
+     * @returns {Number}
+     */
+    this.getStart = function ()
+    {
+	return dateStart;
+    }
+    
+    /**
+     * Returns building end date
+     * @returns {Number}
+     */
+    this.getEnd = function ()
+    {
+	return dateEnd;
+    }
+    
+    /**
+     * Returns current animation date
+     * @returns {Number}
+     */
+    this.getIterator = function ()
+    {
+	return dateIterator;
+    }
+    
+    /**
+     * Sets scene to mentioned time moment
+     * @param {Integer} current
+     */
+    this.setDateIterator = function (current)
+    {
+	for ( var property in processScheme) {//search for all stages
+	    if (property <= current)
+	    {
+		//console.log(processScheme[property]);
+		for ( var show in processScheme[property]['show']) {//show all mentioned objects
+		    GlObjects[processScheme[property]['show'][show]].show();
+		    console.log("show " + processScheme[property]['show'][show]);
+		}
+		for ( var hide in processScheme[property].hide) {//hide all mentioned objects
+		    GlObjects[processScheme[property].hide[hide]].hide();
+		    console.log("hide " + processScheme[property].hide[hide]);
+		}
+	    }
+	}
+	dateIterator = current;
+	var currentDate = new Date(Number(dateIterator)*1000);
+	timeContainer.innerHTML = currentDate.toLocaleString();
     }
 }

@@ -4,24 +4,16 @@ var scene, renderer;
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
 var bimScene;
+var processingScheme = {};
 
 window.dhx_globalImgPath = "ext/slider/imgs/";
-
 var slider = new dhtmlxSlider("slider", 800);
-slider.init();
-
-var processingScheme = {};
 
 init();
 animate();
 
 function init() 
 {
-    //container = document.createElement('div');
-    //container = ;
-    //console.log(container);
-    //document.body.appendChild(container);
-
     scene = new THREE.Scene();
     scene.fog = new THREE.Fog( 0xffffff, 1000, 10000 );
     bimScene = new Scene(scene, container);
@@ -65,6 +57,19 @@ function init()
     mesh.rotation.x = 90 * ( Math.PI / 180 );
     mesh.receiveShadow = true;
     scene.add( mesh );
+    
+    //slier
+    
+    slider.attachEvent("onChange", sliderHandler);
+    slider.init();
+    slider.setMin(0);
+    slider.setMax(100);
+    slider.setStep(1);
+    
+    //gantt
+    
+    processingScheme = convertGantt(gantt);
+    bimScene.addProcessSceme(processingScheme);
 }
 
 function onWindowResize() 
@@ -86,12 +91,8 @@ function animate()
 
 function render() 
 {
-    /*directionalLight.position.x = Math.cos(alpha * Math.PI / 360) * 250;
-    directionalLight.position.z = Math.sin(alpha * Math.PI / 360) * 250;
-    directionalLight.position.y = Math.abs(Math.sin(alpha * Math.PI / 360)) * 250;*/
-    //hemiLight.intensity = Math.abs(Math.sin(alpha * Math.PI / 360))+0.25;
-
     bimScene.update();
+    setSliderPercent();
     renderer.render(scene, bimScene.getObject('person').Camera);
 }
 
@@ -108,6 +109,44 @@ function convertGantt(gantt)
     return scheme;
 }
 
-processingScheme = convertGantt(gantt);
-bimScene.addProcessSceme(processingScheme);
+function setSliderPercent()
+{
+    var start = bimScene.getStart();
+    var end = bimScene.getEnd();
+    var current = bimScene.getIterator();
+    
+    if (typeof start !== "undefined" && typeof end !== "undefined" && bimScene.statusPlay == true)
+    {
+	var percent = (end - start) / 100;
+	var curr_percents = (current - start) / percent;
+	slider.setValue(curr_percents);
+    }
+}
+
+function sliderHandler(pos, slider) {
+    
+    var start = bimScene.getStart();
+    var end = bimScene.getEnd();
+    if (typeof start !== "undefined" && typeof end !== "undefined" /*&& bimScene.statusPlay == true*/)
+    {
+	var percent = (end - start) / 100;
+	var currrent = (pos * percent) + Number(start);
+	bimScene.setDateIterator(currrent);
+    }
+}
+
+function play()
+{
+    if (document.getElementById('play').innerHTML == "Play")
+    {
+	document.getElementById('play').innerHTML = "Pause";
+	bimScene.play();
+    }
+    else
+    {
+	document.getElementById('play').innerHTML = "Play";
+	bimScene.pause();
+    }
+}
+
 //bimScene.play();
