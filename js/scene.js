@@ -91,6 +91,11 @@ function Scene(scene, domElement)
      */
     var processScheme = [];
     
+    /**
+     * Contains current work from sheme
+     */
+    this.currentWork;
+    
     var timeContainer = document.getElementById('bimtime');
     
     /**
@@ -168,6 +173,7 @@ function Scene(scene, domElement)
 			GlObjects[processScheme[property].hide[hide]].hide();
 			console.log("hide " + processScheme[property].hide[hide]);
 		    }
+		    this.currentWork = processScheme[property];
 		}
 	    }
 	    

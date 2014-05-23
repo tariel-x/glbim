@@ -68,19 +68,25 @@ function init()
     
     //gantt
     
-    processingScheme = convertGantt(gantt);
+    processingScheme = convertGantt(ganttData);
     bimScene.addProcessSceme(processingScheme);
-}
-
-function onWindowResize() 
-{
-    windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 4;
-
-    camera.aspect = window.innerWidth / (window.innerHeight / 2);
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(window.innerWidth, window.innerHeight / 2);
+    //kostil here
+    var ganttHeight = window.innerHeight * 0.45;
+    document.getElementById('gantt').style.height=ganttHeight+'px';
+    gantt.config.xml_date = "%Y-%m-%d %H:%i:%s";
+    gantt.config.readonly = true;
+    gantt.init("gantt");
+    gantt.parse(ganttData);
+    gantt.attachEvent("onTaskClick", function(id, e){
+	var date = new Date(this.getTask(id).start_date).getTime()/1000;
+	var start = bimScene.getStart();
+	var end = bimScene.getEnd();
+	var percent = (end - start) / 100;
+	var curr_percents = (date - start) / percent;
+	sliderHandler(curr_percents, slider);
+	slider.setValue(curr_percents);
+	//console.log(curr_percents );
+    });
 }
 
 function animate() 
@@ -92,24 +98,25 @@ function animate()
 function render() 
 {
     bimScene.update();
-    setSliderPercent();
+    updateControls();
     renderer.render(scene, bimScene.getObject('person').Camera);
 }
 
 function convertGantt(gantt)
 {
     var scheme = {};
-    for (var i = 0; i < gantt['data'].length; i++)
+    for (var i = 0; i < ganttData['data'].length; i++)
     {
-	var date = new Date(gantt['data'][i]['start_date']).getTime()/1000;
+	var date = new Date(ganttData['data'][i]['start_date']).getTime()/1000;
 	scheme[date] = {};
-	scheme[date]['show'] = gantt['data'][i]['show'];
-	scheme[date]['hide'] = gantt['data'][i]['hide'];
+	scheme[date]['show'] = ganttData['data'][i]['show'];
+	scheme[date]['hide'] = ganttData['data'][i]['hide'];
+	scheme[date]['ganttId'] = ganttData['data'][i]['id'];
     }
     return scheme;
 }
 
-function setSliderPercent()
+function updateControls()
 {
     var start = bimScene.getStart();
     var end = bimScene.getEnd();
@@ -120,10 +127,16 @@ function setSliderPercent()
 	var percent = (end - start) / 100;
 	var curr_percents = (current - start) / percent;
 	slider.setValue(curr_percents);
+	console.log(bimScene.currentWork.ganttId);
+	gantt.selectTask(bimScene.currentWork.ganttId);
     }
+    if (current >= end)
+	document.getElementById('play').innerHTML = "Play";
 }
 
-function sliderHandler(pos, slider) {
+
+function sliderHandler(pos, slider) 
+{
     
     var start = bimScene.getStart();
     var end = bimScene.getEnd();
