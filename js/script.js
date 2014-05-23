@@ -21,6 +21,8 @@ function init()
     bimScene.addSun();
     bimScene.addSurrondLight();
     bimScene.addPerson();
+    processingScheme = convertGantt(ganttData);
+    bimScene.addProcessSceme(processingScheme);
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setClearColor( scene.fog.color, 1 );
@@ -44,7 +46,7 @@ function init()
     
     //GROUND
     
-    var geometry = new THREE.PlaneGeometry( 500, 500 );
+    var geometry = new THREE.PlaneGeometry( 1000, 1000 );
 
     var texture = THREE.ImageUtils.loadTexture( 'files/textures/grasslight-big.jpg' );
     texture.anisotropy = renderer.getMaxAnisotropy();
@@ -67,9 +69,6 @@ function init()
     slider.setStep(1);
     
     //gantt
-    
-    processingScheme = convertGantt(ganttData);
-    bimScene.addProcessSceme(processingScheme);
     //kostil here
     var ganttHeight = window.innerHeight * 0.45;
     document.getElementById('gantt').style.height=ganttHeight+'px';
@@ -104,15 +103,20 @@ function render()
 
 function convertGantt(gantt)
 {
-    var scheme = {};
-    for (var i = 0; i < ganttData['data'].length; i++)
+    console.log(gantt);
+    var scheme = [];
+    for (var i = 0; i < gantt['data'].length; i++)
     {
-	var date = new Date(ganttData['data'][i]['start_date']).getTime()/1000;
+	
+	var strdate = gantt['data'][i]['start_date'].split(' ');
+	var date = new Date(strdate[0] + "T" + strdate[1]).getTime()/1000;
+	var raw_date = new Date(gantt['data'][i]['start_date']);
 	scheme[date] = {};
-	scheme[date]['show'] = ganttData['data'][i]['show'];
-	scheme[date]['hide'] = ganttData['data'][i]['hide'];
-	scheme[date]['ganttId'] = ganttData['data'][i]['id'];
+	scheme[date]['show'] = gantt['data'][i]['show'];
+	scheme[date]['hide'] = gantt['data'][i]['hide'];
+	scheme[date]['ganttId'] = gantt['data'][i]['id'];
     }
+    console.log(scheme);
     return scheme;
 }
 
