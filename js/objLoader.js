@@ -35,9 +35,13 @@ function objLoader(glScene, glObjects)
      */
     var factory = new objectFactory();
     
+    /**
+     * Loads OBJ MTL model and fills scene with objects
+     * @param string objFile
+     * @param string mtlFile
+     */
     this.loadObj = function(objFile, mtlFile)
     {
-	//console.log(GlScene);
         var loader = new THREE.OBJMTLLoader();
 	
         loader.load(objFile, mtlFile, function(object) {
@@ -62,5 +66,72 @@ function objLoader(glScene, glObjects)
 		    GlObjects[child.name] = factory.createObject(child, child.name, type[0]);
 		}
         });
+    }
+    
+    /**
+     * Loads UTF8 model and fills scene with objects
+     * @param string jsFile json file, describing utf8 model
+     */
+    this.loadUtf8 = function(jsFile)
+    {
+	var loader = new THREE.UTF8Loader();
+
+	loader.load( jsFile, function ( object ) 
+	{
+		console.log( "loaded " + jsFile );
+
+		var s = 10;
+		object.scale.set( s, s, s );
+		object.castShadow = true;
+		object.receiveShadow = true;
+		for (var j = 0; j < object.children.length; j++)
+		{
+		    object.children[j].castShadow = true;
+		    object.children[j].receiveShadow = true;
+		    //object.children[j].material.specular = new THREE.Color( 0x000000 );
+		    //object.children[j].material.side = THREE.DoubleSide;
+		}
+		GlScene.add( object );
+		console.log(object);
+
+		object.traverse( function( node ) {
+
+			node.castShadow = true;
+			node.receiveShadow = true;
+
+		} );
+
+	}, { normalizeRGB: true } );
+//	var start = Date.now();
+//	var loader = new THREE.UTF8Loader();
+//
+//	loader.load( "files/utf8/cubes.js", function ( object ) {
+//
+//		var end = Date.now();
+//		console.log( "house", end - start, "ms" );
+//
+//		var s = 20;
+//		object.scale.set( s, s, s );
+//		object.position.x = 125;
+//		object.position.y = -125;
+//		scene.add( object );
+//		console.log(object);
+//
+//		object.traverse( function( node ) {
+//
+//			node.castShadow = true;
+//			node.receiveShadow = true;
+//			//console.log(node);
+//
+//			/*if ( node.material && node.material.name === "skin" ) {
+//
+//				node.material.wrapAround = true;
+//				node.material.wrapRGB.set( 0.6, 0.2, 0.1 );
+//
+//			}*/
+//
+//		} );
+//
+//	}, { normalizeRGB: true } );
     }
 }

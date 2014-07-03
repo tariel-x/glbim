@@ -17,7 +17,8 @@ function init()
     scene = new THREE.Scene();
     scene.fog = new THREE.Fog( 0xffffff, 1000, 10000 );
     bimScene = new Scene(scene, container);
-    bimScene.load('files/textures/cubes.obj', 'files/textures/cubes.mtl');
+    //bimScene.load('obj', {objFile : 'files/textures/cubes.obj', mtlFile : 'files/textures/cubes.mtl'});
+    bimScene.load('utf8', {jsFile : 'files/utf8/cubes.js'});
     bimScene.addSun();
     bimScene.addSurrondLight();
     bimScene.addPerson();

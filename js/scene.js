@@ -100,13 +100,23 @@ function Scene(scene, domElement)
     
     /**
      * Loads model and fills scene with objects
-     * @param {string} objFile Path and model filename
-     * @param {string} mtlFile Path and MTL filename
+     * @param string type object type: obj, utf8, etc
+     * @param object params object with names of model files
      */
-    this.load = function(objFile, mtlFile)
+    this.load = function(type, params)
     {
 	var loader = new objLoader(GlScene, GlObjects);
-	loader.loadObj(objFile, mtlFile);
+	switch (type)
+	{
+	    case 'obj':
+		loader.loadObj(params.objFile, params.mtlFile);
+		break;
+	    case 'utf8':
+		loader.loadUtf8(params.jsFile);
+		break;
+	}
+	
+	
     }
 
     /**
