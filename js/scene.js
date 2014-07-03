@@ -105,33 +105,10 @@ function Scene(scene, domElement)
      */
     this.load = function(objFile, mtlFile)
     {
-	//console.log(GlScene);
-        var loader = new THREE.OBJMTLLoader();
-	
-        loader.load(objFile, mtlFile, function(object) {
-	    while (object.children.length !== 0)//magic
-		for (var i = 0; i <= object.children.length; i++)
-		{
-		    var child = object.children[i];
-		    console.log('loaded ' + child.name);
-
-		    child.castShadow = true;
-		    child.receiveShadow = true;
-		    for (var j = 0; j < child.children.length; j++)
-		    {
-			child.children[j].castShadow = true;
-			child.children[j].receiveShadow = true;
-			child.children[j].material.specular = new THREE.Color( 0x000000 );
-			child.children[j].material.side = THREE.DoubleSide;
-		    }
-		    child.scale.set(10, 10, 10);
-		    GlScene.add(child);
-		    var type = child.name.split('_');
-		    GlObjects[child.name] = factory.createObject(child, child.name, type[0]);
-		}
-        });
+	var loader = new objLoader(GlScene, GlObjects);
+	loader.loadObj(objFile, mtlFile);
     }
-    
+
     /**
      * Returns bimObject by it's name
      * @param {string} name
